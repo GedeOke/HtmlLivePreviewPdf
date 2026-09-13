@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>Invoice Preview</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="invoice" aria-busy="true">
+      <header class="invoice-header">
+        <a class="brand" href="https://example.internal" aria-label="Nusantara Labs">
+          <span class="brand-mark" aria-hidden="true">NL</span>
+          <span>
+            <strong id="company-name">YoungLexn Labs</strong>
+            <small id="company-tagline">damit products, thoughtfully built.</small>
+          </span>
+        </a>
+
+        <section class="invoice-heading" aria-labelledby="document-title">
+          <p class="eyebrow">Dokumen penagihan</p>
+          <h1 id="document-title">INVOICE</h1>
+          <span id="status" class="status-badge">Memuat…</span>
+        </section>
+      </header>
+
+      <section class="summary-grid">
+        <div class="address-block">
+          <p class="label">Ditagihkan kepada</p>
+          <h2 id="customer-name">Memuat pelanggan…</h2>
+          <p id="customer-company"></p>
+          <p id="customer-address" class="multiline"></p>
+          <p id="customer-email"></p>
+        </div>
+
+        <dl class="invoice-meta">
+          <div><dt>Nomor invoice</dt><dd id="invoice-number">—</dd></div>
+          <div><dt>Tanggal terbit</dt><dd id="issue-date">—</dd></div>
+          <div><dt>Jatuh tempo</dt><dd id="due-date">—</dd></div>
+          <div><dt>Project</dt><dd id="project-name">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="items-section" aria-labelledby="items-title">
+        <h2 id="items-title" class="sr-only">Rincian tagihan</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Deskripsi</th>
+              <th scope="col" class="number-column">Qty</th>
+              <th scope="col" class="number-column">Harga</th>
+              <th scope="col" class="number-column">Jumlah</th>
+            </tr>
+          </thead>
+          <tbody id="invoice-items">
+            <tr><td colspan="4" class="loading-row">Mengambil rincian dari API…</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="totals" aria-label="Total tagihan">
+        <dl>
+          <div><dt>Subtotal</dt><dd id="subtotal">—</dd></div>
+          <div><dt id="tax-label">Pajak</dt><dd id="tax">—</dd></div>
+          <div id="discount-row" hidden><dt>Diskon</dt><dd id="discount">—</dd></div>
+          <div class="grand-total"><dt>Total</dt><dd id="grand-total">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="notes-grid">
+        <div>
+          <p class="label">Catatan</p>
+          <p id="notes" class="multiline">—</p>
+        </div>
+        <div class="payment-card">
+          <p class="label">Pembayaran</p>
+          <p><strong id="bank-name">—</strong></p>
+          <p id="bank-account">—</p>
+          <p id="account-holder">—</p>
+        </div>
+      </section>
+
+      <footer class="invoice-footer">
+        <p>Terima kasih atas kepercayaan Anda.</p>
+        <p id="company-contact">—</p>
+      </footer>
+
+      <div id="error-message" class="error-message" role="alert" hidden></div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+{
+  "name": "html-live-pdf-preview",
+  "displayName": "HTML Live PDF Preview",
+  "description": "Live, in-editor PDF preview for HTML.",
+  "version": "0.1.0",
+  "publisher": "gede-oke",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "html",
+    "pdf",
+    "preview",
+    "live"
+  ],
+  "main": "./dist/extension.js",
+  "extensionKind": [
+    "ui"
+  ],
+  "activationEvents": [
+    "onCommand:htmlLivePdf.openPreview",
+    "onCommand:htmlLivePdf.refreshPreview",
+    "onCommand:htmlLivePdf.exportPdf"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "HTML Live PDF Preview executes workspace JavaScript in a headless browser."
+    },
+    "virtualWorkspaces": {
+      "supported": false,
+      "description": "Rendering requires local files and a platform-specific Chromium binary."
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "htmlLivePdf.openPreview",
+        "title": "Open Live PDF Preview",
+        "category": "HTML Live PDF"
+      },
+      {
+        "command": "htmlLivePdf.refreshPreview",
+        "title": "Refresh Preview",
+        "category": "HTML Live PDF",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "htmlLivePdf.exportPdf",
+        "title": "Export PDF",
+        "category": "HTML Live PDF",
+        "icon": "$(save-as)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "htmlLivePdf.openPreview",
+          "when": "resourceExtname == .html",
+          "group": "navigation@10"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "htmlLivePdf.openPreview",
+          "when": "resourceExtname == .html",
+          "group": "navigation@10"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "htmlLivePdf.openPreview",
+          "when": "resourceExtname == .html",
+          "group": "navigation@10"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "HTML Live PDF Preview",
+      "properties": {
+        "htmlLivePdf.serverRoot": {
+          "type": "string",
+          "default": ".",
+          "scope": "resource",
+          "markdownDescription": "Workspace-relative directory served at the local preview origin. The HTML entry must be inside this directory."
+        },
+        "htmlLivePdf.pageFormat": {
+          "type": "string",
+          "enum": [
+            "A4",
+            "A3",
+            "A5",
+            "Letter",
+            "Legal"
+          ],
+          "default": "A4",
+          "scope": "resource",
+          "description": "Fallback PDF paper format when CSS page size is not preferred."
+        },
+        "htmlLivePdf.landscape": {
+          "type": "boolean",
+          "default": false,
+          "scope": "resource",
+          "description": "Render PDF pages in landscape orientation."
+        },
+        "htmlLivePdf.printBackground": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Include background colors and images in the PDF."
+        },
+        "htmlLivePdf.preferCssPageSize": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Prefer CSS @page size over the configured paper format."
+        },
+        "htmlLivePdf.readyMode": {
+          "type": "string",
+          "enum": [
+            "networkIdle",
+            "selector",
+            "windowFlag"
+          ],
+          "enumDescriptions": [
+            "Wait until the network has been idle.",
+            "Wait until readySelector is attached to the page.",
+            "Wait until window.__HTML_LIVE_PDF_READY__ is true."
+          ],
+          "default": "networkIdle",
+          "scope": "resource",
+          "description": "Condition that marks dynamic page content as ready for PDF rendering."
+        },
+        "htmlLivePdf.readySelector": {
+          "type": "string",
+          "default": "[data-html-pdf-ready=\"true\"]",
+          "scope": "resource",
+          "description": "CSS selector awaited when readyMode is selector."
+        },
+        "htmlLivePdf.timeoutMs": {
+          "type": "number",
+          "minimum": 1000,
+          "maximum": 120000,
+          "default": 30000,
+          "scope": "resource",
+          "description": "Maximum time for browser startup, navigation, and page readiness."
+        },
+        "htmlLivePdf.debounceMs": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5000,
+          "default": 300,
+          "scope": "resource",
+          "description": "Delay after a relevant file change before rendering again."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "clean": "node ./scripts/clean.mjs",
+    "build": "node ./scripts/build.mjs",
+    "watch": "node ./scripts/build.mjs --watch",
+    "check": "npm run typecheck && npm run lint && npm run test:unit",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run --config vitest.config.mts",
+    "test:browser": "vitest run --config vitest.browser.config.mts",
+    "test:extension": "npm run build && node ./scripts/run-extension-tests.mjs",
+    "browser:install": "node ./scripts/install-browser.mjs",
+    "package": "node ./scripts/package-target.mjs",
+    "vscode:prepublish": "npm run build"
+  },
+  "dependencies": {
+    "playwright-core": "1.55.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@types/node": "20.17.28",
+    "@types/vscode": "1.96.0",
+    "@vscode/test-electron": "2.5.2",
+    "@vscode/vsce": "3.3.2",
+    "esbuild": "0.25.2",
+    "eslint": "9.39.5",
+    "pdfjs-dist": "4.10.38",
+    "playwright": "1.55.1",
+    "typescript": "5.8.2",
+    "typescript-eslint": "8.28.0",
+    "vitest": "4.1.11"
+  }
+}

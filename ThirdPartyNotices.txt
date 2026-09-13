@@ -1,0 +1,7 @@
+HTML Live PDF Preview includes the following third-party software:
+
+- Playwright / playwright-core, Copyright Microsoft Corporation, Apache-2.0.
+- PDF.js, Copyright Mozilla Foundation, Apache-2.0.
+- Chromium and its bundled components, under their respective open-source
+  licenses. The Chromium distribution included in each platform VSIX retains
+  the license files shipped by Playwright.

@@ -1,0 +1,74 @@
+name: Build platform VSIX files
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: win32-x64
+            runner: windows-2022
+          - target: darwin-x64
+            runner: macos-15-intel
+          - target: darwin-arm64
+            runner: macos-15
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run browser:install
+      - run: npm run test:browser
+      - run: npm run package -- ${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}
+          path: release/*.vsix
+          if-no-files-found: error
+
+  release-bundle:
+    needs: package
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+      - run: node scripts/checksums.mjs release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: html-live-pdf-preview-${{ github.ref_name }}
+          path: release/*
+
+  github-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: release-bundle
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: html-live-pdf-preview-${{ github.ref_name }}
+          path: release
+      - run: gh release create "$GITHUB_REF_NAME" release/* --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}

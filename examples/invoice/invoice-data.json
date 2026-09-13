@@ -1,0 +1,48 @@
+{
+  "invoiceNumber": "INV-2026-0912",
+  "issueDate": "2026-09-12",
+  "dueDate": "2026-09-26",
+  "status": "paid",
+  "projectName": "Internal Operations Portal",
+  "company": {
+    "name": "Asu Labs",
+    "tagline": "Digital products, thoughtfully built.",
+    "email": "finance@nusantaralabs.co.id",
+    "phone": "+62 21 555 0188",
+    "website": "nusantaralabs.co.id"
+  },
+  "customer": {
+    "name": "Gede Oke",
+    "company": "PT Cakrawala Digital Indonesia",
+    "address": "Menara Cakrawala, Lantai 18\nJl. Jenderal Sudirman No. 88\nJakarta Selatan 12190",
+    "email": "dewi.kartika@cakrawala.co.id"
+  },
+  "items": [
+    {
+      "name": "Product discovery & UX architecture",
+      "description": "Workshop, user-flow mapping, dan spesifikasi pengalaman pengguna.",
+      "quantity": 1,
+      "unitPrice": 12500000
+    },
+    {
+      "name": "Frontend implementation",
+      "description": "Implementasi dashboard responsif dan integrasi design system.",
+      "quantity": 2,
+      "unitPrice": 9800000
+    },
+    {
+      "name": "API integration & quality assurance",
+      "description": "Integrasi endpoint internal, automated test, dan UAT support.",
+      "quantity": 1,
+      "unitPrice": 8400000
+    }
+  ],
+  "discount": 2500000,
+  "taxRate": 0.11,
+  "notes": "Pembayaran telah diterima.\nSimpan invoice ini sebagai bukti transaksi.",
+  "payment": {
+    "bank": "Bank Central Asia",
+    "accountNumber": "012 345 6789",
+    "accountHolder": "PT Nusantara Labs Indonesia"
+  }
+}
