@@ -83,10 +83,10 @@ describe("PdfRenderer", () => {
       });
       const dependencies = sampleServer.endCapture(capture);
       expect(dependencies.size).toBeGreaterThanOrEqual(4);
-      const text = await extractPdfText(pdfBytes);
-      expect(text).toContain(sampleData.invoiceNumber);
-      expect(text).toContain(sampleData.customer.name);
-      expect(text).toContain(sampleData.projectName);
+      const text = withoutWhitespace(await extractPdfText(pdfBytes));
+      expect(text).toContain(withoutWhitespace(sampleData.invoiceNumber));
+      expect(text).toContain(withoutWhitespace(sampleData.customer.name));
+      expect(text).toContain(withoutWhitespace(sampleData.projectName));
     } finally {
       await sampleServer.stop();
     }
@@ -108,4 +108,8 @@ async function extractPdfText(pdfBytes: Buffer): Promise<string> {
   } finally {
     await document.destroy();
   }
+}
+
+function withoutWhitespace(value: string): string {
+  return value.replaceAll(/\s/g, "");
 }
